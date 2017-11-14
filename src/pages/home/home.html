@@ -1,14 +1,39 @@
 <ion-header>
-  <ion-navbar>
-    <ion-title>
-      Ionic Blank
-    </ion-title>
-  </ion-navbar>
+  <ion-toolbar>
+    <ion-buttons right>
+      <button ion-button (click)="refreshPage()">
+        <ion-icon name="refresh"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title>Weather App</ion-title>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content padding>
-  The world is your oyster.
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will be your guide.
-  </p>
+  <form (ngSubmit)="searchCity()">
+    <ion-item>
+      <ion-label>Type your city:</ion-label>
+      <ion-input type="text" [(ngModel)]="searchInput" name="city"></ion-input>
+    </ion-item>
+    <button ion-button icon-left block>
+      <ion-icon name="search"></ion-icon>
+      Find Weather
+    </button>
+  </form>
+  <ion-list no-lines>
+    <ion-item [hidden]="c_items.length > 0">
+      <p><strong>Weather data is not available</strong></p>
+    </ion-item>
+    <ion-item *ngFor="let c_item of c_items">
+      <p>
+        <strong>{{c_item.name}}:</strong> {{c_item.value}}
+      </p>
+    </ion-item>
+  </ion-list>
 </ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-title>Peter Luladjiev</ion-title>
+  </ion-toolbar>
+</ion-footer>
