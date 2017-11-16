@@ -20,16 +20,35 @@
       Find Weather
     </button>
   </form>
-  <ion-list no-lines>
-    <ion-item [hidden]="c_items.length > 0">
-      <p><strong>Weather data is not available</strong></p>
-    </ion-item>
-    <ion-item *ngFor="let c_item of c_items">
-      <p>
-        <strong>{{c_item.name}}:</strong> {{c_item.value}}
-      </p>
-    </ion-item>
-  </ion-list>
+  <ion-segment [(ngModel)]="displayMode">
+    <ion-segment-button value="current" (ionSelect)="showCurrent()">
+      Current
+    </ion-segment-button>
+    <ion-segment-button value="forecast" (ionSelect)="showForecast()">
+      Forecast
+    </ion-segment-button>
+  </ion-segment>
+  <div [ngSwitch]="displayMode">
+    <ion-list no-lines *ngSwitchCase="'current'">
+      <ion-item [hidden]="c_items.length > 0">
+        <p><strong>Weather data is not available</strong></p>
+      </ion-item>
+      <ion-item *ngFor="let c_item of c_items">
+        <p>
+          <strong>{{c_item.name}}:</strong> {{c_item.value}}
+        </p>
+      </ion-item>
+    </ion-list>
+    <ion-list inset *ngSwitchCase="'forecast'">
+      <ion-item text-wrap>
+        {{ f_items.length ? 'Tap an item to view the forecast for the selected period.' : 'Forecast data is not available at this time.' }}
+      </ion-item>
+      <button detail-push ion-item *ngFor="let item of f_items" (click)="viewForecast(item)">
+        <ion-icon name="time" item-left></ion-icon>
+        {{item.period}}
+      </button>
+    </ion-list>
+  </div>
 </ion-content>
 
 <ion-footer>

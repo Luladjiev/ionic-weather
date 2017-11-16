@@ -45,4 +45,12 @@ export class WeatherProvider {
       .then(this.extractData)
       .catch(this.handleError);
   }
+
+  getForecast(loc: any): Promise<any> {
+    let url: string = this.makeDataURL(loc, 'forecast');
+    return this.http.get(url)
+      .toPromise()
+      .then(this.extractData)
+      .catch(this.handleError);
+  }
 }

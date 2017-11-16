@@ -13,6 +13,10 @@ export class HomePage {
   currentLoc: any = {};
   c_items: Array<any> = [];
   searchInput: string = '';
+  currentMode: string = 'current';
+  displayMode: string = this.currentMode;
+  f_items: Array<any> = [];
+  days: Array<string> = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
   constructor(
     public alertCtrl: AlertController,
@@ -29,6 +33,8 @@ export class HomePage {
   ionViewDidLoad () {
     this.platform.ready().then(() => {
       document.addEventListener('resume', () => {
+        this.displayMode = this.currentMode;
+
         this.getLocalWeather();
       });
 
@@ -37,7 +43,11 @@ export class HomePage {
   }
 
   refreshpage () {
-    this.showCurrent();
+    if (this.displayMode === this.currentMode) {
+      this.showCurrent();
+    } else {
+      this.showForecast();
+    }
   }
 
   getLocalWeather () {
@@ -69,6 +79,41 @@ export class HomePage {
     }, (error) => {
       loader.dismiss();
       console.error('Error retrieving weather data');
+      console.dir(error);
+      this.showAlert(error);
+    });
+  }
+
+  showForecast () {
+    this.f_items = [];
+
+    let loader = this.loadingCtrl.create({
+      content: 'Retrieving forecast...'
+    });
+
+    loader.present();
+
+    this.weather.getForecast(this.currentLoc).then(data => {
+      loader.dismiss();
+
+      if (data) {
+        for (let period of data.list) {
+          let weatherValues: any = this.formatWeatherData(period);
+
+          let d = new Date(period.dt_txt);
+
+          let dat = this.days[d.getDay()];
+
+          let tm = d.toLocaleTimeString();
+
+          this.f_items.push({ 'period': `${dat} at ${tm}`, 'values': weatherValues });
+        }
+      } else {
+        console.error('Error displaying weather data: Data object is empty');
+      }
+    }, error => {
+      loader.dismiss();
+      console.error("Error retrieving weather data");
       console.dir(error);
       this.showAlert(error);
     });
@@ -124,6 +169,7 @@ export class HomePage {
     this.keyboard.close();
     this.currentLoc = { 'city': this.searchInput };
     this.searchInput = '';
+    this.displayMode = this.currentMode;
     this.showCurrent();
   }
 }
