@@ -3,6 +3,7 @@ import { Keyboard } from '@ionic-native/keyboard';
 import { Component } from '@angular/core';
 import { AlertController, LoadingController, NavController, Platform } from 'ionic-angular';
 import { WeatherProvider } from '../../providers/weather/weather';
+import { WeatherDetailPage } from '../weather-detail/weather-detail';
 
 @Component({
   selector: 'page-home',
@@ -16,7 +17,7 @@ export class HomePage {
   currentMode: string = 'current';
   displayMode: string = this.currentMode;
   f_items: Array<any> = [];
-  days: Array<string> = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+  days: Array<string> = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
   constructor(
     public alertCtrl: AlertController,
@@ -117,6 +118,10 @@ export class HomePage {
       console.dir(error);
       this.showAlert(error);
     });
+  }
+
+  viewForecast (item) {
+    this.navCtrl.push(WeatherDetailPage, { 'forecast': item });
   }
 
   private formatWeatherData (data): any {

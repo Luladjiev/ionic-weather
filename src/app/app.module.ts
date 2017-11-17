@@ -10,11 +10,13 @@ import { HomePage } from '../pages/home/home';
 import { WeatherProvider } from '../providers/weather/weather';
 import { Geolocation } from '@ionic-native/geolocation';
 import { Keyboard } from '@ionic-native/keyboard';
+import { WeatherDetailPage } from '../pages/weather-detail/weather-detail';
 
 @NgModule({
   declarations: [
     MyApp,
-    HomePage
+    HomePage,
+    WeatherDetailPage
   ],
   imports: [
     BrowserModule,
@@ -24,7 +26,8 @@ import { Keyboard } from '@ionic-native/keyboard';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    HomePage
+    HomePage,
+    WeatherDetailPage
   ],
   providers: [
     StatusBar,
